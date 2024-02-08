@@ -1,0 +1,30 @@
+[[source]]
+url = "https://pypi.org/simple"
+verify_ssl = true
+name = "pypi"
+
+[packages]
+fastapi = "*"
+uvicorn = "*"
+pydantic = "*"
+python-jose = {version = "*", extras = ["cryptography"]}
+passlib = {version = "*", extras = ["bcrypt"]}
+python-multipart = "*"
+sqlalchemy = "*"
+mariadb = "*"
+psycopg2-binary = "*"
+alembic = "*"
+mysql = "*"
+sqladmin = "*"
+
+[dev-packages]
+
+[requires]
+python_version = "3.11"
+
+[scripts]
+start = "python main.py"
+init = "alembic init alembic"
+migrate = "alembic revision --autogenerate"
+upgrade = "alembic upgrade head"
+reset_lin_db = "bash ./docs/assets/reset_migrations.sh" 
