@@ -4,4 +4,4 @@
 .env
 
 # database
-/alembic/versions/*
+/migrations/versions/*
