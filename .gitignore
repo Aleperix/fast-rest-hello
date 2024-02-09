@@ -2,7 +2,3 @@
 
 # misc
 .env
-
-# database
-migrations/versions/*
-!migrations/versions
