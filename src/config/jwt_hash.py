@@ -5,6 +5,7 @@ from fastapi import Depends, HTTPException, status
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
 from passlib.context import CryptContext
+from sqlalchemy import or_
 from ..schemas.user import UserIn, UserOut, TokenData
 from ..models.user import User
 from ..config.db import db
@@ -52,7 +53,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
         token_data = TokenData(username=username)
     except JWTError:
         raise credentials_exception
-    db_user = db.query(User).filter_by(username=token_data.username).first()
+    db_user = db.query(User).filter(or_(User.username == token_data.username, User.email == token_data.username)).first()
     if db_user is None:
         raise credentials_exception
     return {"user": db_user, "token": token}
@@ -60,7 +61,7 @@ async def get_current_user(token: str = Depends(oauth2_scheme)):
 def login_user_is_active(is_active: bool):
     print(is_active)
     if not is_active:
-        raise HTTPException(status_code=400, detail="Inactive user")
+        raise HTTPException(status_code=403, detail="Inactive user")
 
 async def get_current_user_is_active(current_user: UserOut = Depends(get_current_user)):
     current_user = current_user["user"]

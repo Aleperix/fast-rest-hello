@@ -16,15 +16,17 @@ psycopg2-binary = "*"
 alembic = "*"
 mysql = "*"
 sqladmin = "*"
+mysqlclient = "*"
 
 [dev-packages]
 
 [requires]
-python_version = "3.11"
+python_version = "3.12"
 
 [scripts]
 start = "python main.py"
-init = "alembic init alembic"
+init = "mkdir ./migrations/versions"
 migrate = "alembic revision --autogenerate"
 upgrade = "alembic upgrade head"
-reset_lin_db = "bash ./docs/assets/reset_migrations.sh" 
+reset_lin_db = "bash ./docs/assets/reset_migrations.sh"
+reset_win_db="powershell -f ./docs/assets/reset_migrations.ps1"

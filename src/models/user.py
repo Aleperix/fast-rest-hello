@@ -1,7 +1,7 @@
 from ..config.db import Base, db
 from sqlalchemy import Column, ForeignKey, Integer, String, Boolean
 from sqlalchemy.orm import relationship
-from ..models.locations import Country, City
+from ..models.locations import Country, State
 from sqladmin import ModelView
 
 class User(Base):
@@ -14,7 +14,7 @@ class User(Base):
     email = Column(String(50), unique=True, nullable=False)
     password = Column(String(64), unique=False, nullable=False)
     country_id = Column(Integer, ForeignKey("country.id"))
-    city_id = Column(Integer, ForeignKey("city.id"))
+    state_id = Column(Integer, ForeignKey("state.id"))
     avatar = Column(String(128), unique=False, nullable=True)
     is_active = Column(Boolean(), unique=False, nullable=False)
     blocked_tokens = relationship('BlockedToken', back_populates='user', lazy=True)
@@ -30,12 +30,13 @@ class User(Base):
             "last_name": self.last_name,
             "email": self.email,
             "country": db.query(Country).get(self.country_id).serialize()["name"],
-            "city": db.query(City).get(self.city_id).serialize()["name"],
+            "state": db.query(State).get(self.state_id).serialize()["name"],
             "is_active": self.is_active,
+            "avatar": self.avatar
             # do not serialize the password, its a security breach
         }
 class UserAdmin(ModelView, model=User):
-    column_list = [User.id, User.username, User.first_name, User.last_name, User.email, User.password, User.country_id, User.city_id, User.avatar, User.is_active]
+    column_list = [User.id, User.username, User.first_name, User.last_name, User.email, User.password, User.country_id, User.state_id, User.avatar, User.is_active]
     category = "Accounts"
     
 class BlockedToken(Base):

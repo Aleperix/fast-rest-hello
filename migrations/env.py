@@ -5,13 +5,11 @@ from sqlalchemy import engine_from_config
 from sqlalchemy import pool
 
 from alembic import context
-
-from main import Base
+from src.config.db import Base
 
 # this is the Alembic Config object, which provides
 # access to the values within the .ini file in use.
 config = context.config
-config.set_main_option('sqlalchemy.url',f'{os.environ["DB_MANAGER"]}://{os.environ["DB_USERNAME"]}:{os.environ["DB_PASSWORD"]}@{os.environ["DB_URL"]}:{os.environ["DB_PORT"]}/{os.environ["DB_NAME"]}')
 
 # Interpret the config file for Python logging.
 # This line sets up loggers basically.
@@ -26,7 +24,8 @@ target_metadata = Base.metadata
 
 # other values from the config, defined by the needs of env.py,
 # can be acquired:
-# my_important_option = config.get_main_option("my_important_option")
+DB_CONFIG = f'{os.environ["DB_MANAGER"]}://{os.environ["DB_USERNAME"]}:{os.environ["DB_PASSWORD"]}@{os.environ["DB_URL"]}:{os.environ["DB_PORT"]}/{os.environ["DB_NAME"]}'
+config.set_main_option("sqlalchemy.url", DB_CONFIG)
 # ... etc.
 
 

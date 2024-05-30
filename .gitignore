@@ -2,3 +2,4 @@
 
 # misc
 .env
+migrations/versions/

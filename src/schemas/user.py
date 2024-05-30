@@ -9,14 +9,14 @@ class BaseUser(BaseModel):
     is_active: bool = False
 
 class UserIn(BaseUser):
-    country_id: int
-    city_id: int
+    country: dict
+    state: dict
     password: str
 
 class UserOut(BaseUser):
     id: int
     country: str
-    city: str
+    state: str
     avatar: str | None = None
 
 class Token(BaseModel):
